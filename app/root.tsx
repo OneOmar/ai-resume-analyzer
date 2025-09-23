@@ -6,17 +6,15 @@ import {
   Scripts,
   ScrollRestoration,
 } from "react-router";
-
 import type { Route } from "./+types/root";
 import "./app.css";
+import { useEffect } from "react";
+import { usePuterStore } from "./lib/puter";
 
+// Preconnect and font stylesheet links for performance
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
-  {
-    rel: "preconnect",
-    href: "https://fonts.gstatic.com",
-    crossOrigin: "anonymous",
-  },
+  { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
   {
     rel: "stylesheet",
     href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
@@ -24,27 +22,39 @@ export const links: Route.LinksFunction = () => [
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
+  // Select only the init function from the store to avoid unnecessary re-renders
+  const init = usePuterStore((state) => state.init);
+
+  // Run Puter initialization only on the client after component mounts
+  useEffect(() => {
+    init(); // Setup analytics, auth, and session tracking
+  }, [init]);
+
   return (
     <html lang="en">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <Meta />
-        <Links />
+        <Meta /> {/* Route-specific meta tags */}
+        <Links /> {/* Preconnect & stylesheet links */}
       </head>
       <body>
-        {children}
-        <ScrollRestoration />
-        <Scripts />
+        {/* Load Puter script for client-side analytics and auth */}
+        <script src="https://js.puter.com/v2/"></script>
+        {children} {/* Render page content */}
+        <ScrollRestoration /> {/* Restore scroll position on navigation */}
+        <Scripts /> {/* Load React Router scripts */}
       </body>
     </html>
   );
 }
 
+// Main outlet for nested routes
 export default function App() {
   return <Outlet />;
 }
 
+// Global error boundary for catching route-level errors
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   let message = "Oops!";
   let details = "An unexpected error occurred.";
@@ -56,7 +66,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
       error.status === 404
         ? "The requested page could not be found."
         : error.statusText || details;
-  } else if (import.meta.env.DEV && error && error instanceof Error) {
+  } else if (import.meta.env.DEV && error instanceof Error) {
     details = error.message;
     stack = error.stack;
   }
