@@ -5,4 +5,5 @@ import { type RouteConfig, index, route } from "@react-router/dev/routes";
 export default [
   index("routes/home.tsx"),           // maps to "/" (home page)
   route("/auth", "routes/auth.tsx"),  // maps to "/auth" (login page)
+  route("/upload", "routes/upload.tsx")
 ] satisfies RouteConfig;
