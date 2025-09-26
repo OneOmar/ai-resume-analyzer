@@ -1,3 +1,16 @@
+import { type ClassValue, clsx } from "clsx"
+import { twMerge } from "tailwind-merge"
+
+/**
+ * Merge Tailwind classes conditionally and resolve conflicts.
+ * @param classes Any mix of strings, arrays or conditional objects.
+ */
+export function cn(...classes: ClassValue[]): string {
+  // clsx expects the arguments spread, not as a single array
+  return twMerge(clsx(...classes))
+}
+
+
 /**
  * Convert bytes to a human-readable string with appropriate units
  * @param bytes - File size in bytes
@@ -18,4 +31,7 @@ export function formatSize(bytes: number): string {
   return `${parseFloat(value.toFixed(2))} ${sizes[i]}`;
 }
 
-export const generateUUID = () => crypto.randomUUID();
+/**
+ * Generate a RFC-4122 compliant UUID (v4).
+ */
+export const generateUUID = (): string => crypto.randomUUID()

@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
+import ATS from "~/components/ATS";
+import Details from "~/components/Details";
+import Summary from "~/components/Summary";
 import { usePuterStore } from "~/lib/puter";
 
 export const meta = () => [
@@ -117,13 +120,20 @@ const ResumeFeedback = () => {
           ) : error ? (
             <p className="mt-6 text-red-600">Error: {error}</p>
           ) : feedback ? (
-            // Render feedback. If structured, show JSON; if string, show string.
+            // If feedback is structured, use Summary component
             <div className="mt-6 space-y-4">
               <h3 className="text-xl font-semibold">Summary</h3>
               {typeof feedback === "string" ? (
                 <p className="text-gray-700">{feedback}</p>
               ) : (
-                <pre className="p-4 bg-gray-50 rounded text-sm overflow-auto">{JSON.stringify(feedback, null, 2)}</pre>
+                <div className="flex flex-col gap-8 animate-in fade-in duration-1000">
+                  <Summary feedback={feedback} />
+                  <ATS
+                    score={feedback.ATS.score || 0}
+                    suggestions={feedback.ATS.tips || []}
+                  />
+                  <Details feedback={feedback} />
+                </div>
               )}
             </div>
           ) : (
