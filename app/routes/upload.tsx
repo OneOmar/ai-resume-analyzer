@@ -126,8 +126,8 @@ const Upload = () => {
       updateStatus("Analysis complete, redirecting...");
       console.log(data);
 
-      // TODO: Navigate to results page
-      // navigate(`/results/${uuid}`);
+      // TODO: Navigate to feedback page
+      navigate(`/feedback/${uuid}`);
     } catch (err) {
       const message = err instanceof Error ? err.message : "Unexpected error";
       updateStatus(`Error: ${message}`);
