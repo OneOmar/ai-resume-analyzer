@@ -20,4 +20,4 @@ export default function NotFound() {
 }
 
 // Loader for proper HTTP 404 response
-export const loader = () => ({ status: 404 });
+// export const loader = () => ({ status: 404 });
