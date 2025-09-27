@@ -190,7 +190,6 @@ const Upload = () => {
                     type="text"
                     name="company-name"
                     placeholder="Company Name"
-                    required
                   />
                 </div>
 
@@ -202,7 +201,6 @@ const Upload = () => {
                     type="text"
                     name="job-title"
                     placeholder="Job Title"
-                    required
                   />
                 </div>
 
@@ -214,7 +212,6 @@ const Upload = () => {
                     name="job-description"
                     rows={5}
                     placeholder="Job Description"
-                    required
                   />
                 </div>
 
